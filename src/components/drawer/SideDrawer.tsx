@@ -94,7 +94,7 @@ const SideDrawer = ({ children }: { children: ReactNode }) => {
                   {themeName === 'dark' ? <SunIcon /> : <MoonIcon />}
                 </ListItemIcon>
                 <ListItemText
-                  primary={themeName === 'dark' ? 'Light mode' : 'Dark Mode'}
+                  primary={themeName === 'dark' ? 'Modo claro' : 'Modo escuro'}
                 />
               </ListItemButton>
             </List>
