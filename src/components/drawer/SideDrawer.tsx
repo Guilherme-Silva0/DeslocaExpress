@@ -36,7 +36,7 @@ const SideDrawer = ({ children }: { children: ReactNode }) => {
   }, [SetDrawerOption, routes])
 
   return (
-    <Box width="100vw" height="100vh">
+    <Box width="100vw" height="100%">
       <Drawer
         open={isDrawerOpen}
         onClose={toggleDrawerOpen}
@@ -101,7 +101,7 @@ const SideDrawer = ({ children }: { children: ReactNode }) => {
           </Box>
         </Box>
       </Drawer>
-      <Box height="100vh" marginLeft={smDown ? 0 : theme.spacing(28)}>
+      <Box height="100%" marginLeft={smDown ? 0 : theme.spacing(28)}>
         {children}
       </Box>
     </Box>
