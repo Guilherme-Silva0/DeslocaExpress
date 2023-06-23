@@ -19,7 +19,13 @@ const Header = ({ title }: IHeaderProps) => {
   const smDown = useMediaQuery(theme.breakpoints.down('sm'))
   const { toggleDrawerOpen } = useDrawerContext()
   return (
-    <Stack direction="row" alignItems="center" gap={0.5} padding={2}>
+    <Stack
+      direction="row"
+      alignItems="center"
+      gap={!smDown && title === '' ? 0 : 0.5}
+      padding={!smDown && title === '' ? 0 : 2}
+      width="auto"
+    >
       {smDown && (
         <IconButton onClick={toggleDrawerOpen}>
           <MenuIcon size={28} />
