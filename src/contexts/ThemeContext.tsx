@@ -8,6 +8,7 @@ import {
   createContext,
   useCallback,
   useContext,
+  useEffect,
   useMemo,
   useState,
 } from 'react'
@@ -23,6 +24,14 @@ export const useAppThemeContext = () => useContext(AppThemeContext)
 
 export const AppThemeProvider = ({ children }: { children: ReactNode }) => {
   const [themeName, setThemeName] = useState<'light' | 'dark'>('light')
+
+  useEffect(() => {
+    setThemeName((localStorage.getItem('theme') as 'light' | 'dark') ?? 'light')
+  }, [])
+
+  useEffect(() => {
+    localStorage.setItem('theme', themeName)
+  }, [themeName])
 
   const toggleTheme = useCallback(() => {
     setThemeName((currentTime) => (currentTime === 'light' ? 'dark' : 'light'))
