@@ -21,6 +21,14 @@ export interface IDriver {
   vencimentoHabilitacao: string
 }
 
+export interface IVehicle {
+  id?: number
+  placa?: string
+  marcaModelo: string
+  anoFabricacao: number
+  kmAtual: number
+}
+
 const api = axios.create({
   baseURL: 'https://api-deslocamento.herokuapp.com',
 })
@@ -112,7 +120,6 @@ const useApi = () => ({
   editDriver: async (id: number | undefined, dataForm: IDriver) => {
     try {
       if (!id) return { data: 0, error: true }
-      console.log(dataForm)
       await api.put(`/api/v1/Condutor/${id}`, dataForm)
 
       return { data: 0, error: false }
@@ -123,6 +130,57 @@ const useApi = () => ({
   deleteDriver: async (id: number) => {
     try {
       await api.delete(`/api/v1/Condutor/${id}`, { data: { id } })
+
+      return { data: 0, error: false }
+    } catch (_error) {
+      return { data: 0, error: true }
+    }
+  },
+  getAllVehicles: async () => {
+    try {
+      const { data }: { data: IVehicle[] } = await api.get('/api/v1/Veiculo')
+
+      return { data, error: false }
+    } catch (_error) {
+      return { data: [], error: true }
+    }
+  },
+  getVehicleById: async (id: string) => {
+    try {
+      const { data }: { data: IVehicle } = await api.get(
+        `/api/v1/Veiculo/${id}`,
+      )
+
+      return { data, error: false }
+    } catch (_error) {
+      return { data: {}, error: true }
+    }
+  },
+  createNewVehicle: async (dataForm: IVehicle) => {
+    try {
+      const { data }: { data: number } = await api.post(
+        '/api/v1/Veiculo',
+        dataForm,
+      )
+
+      return { data, error: false }
+    } catch (_error) {
+      return { data: 0, error: true }
+    }
+  },
+  editVehicle: async (id: number | undefined, dataForm: IVehicle) => {
+    try {
+      if (!id) return { data: 0, error: true }
+      await api.put(`/api/v1/Veiculo/${id}`, dataForm)
+
+      return { data: 0, error: false }
+    } catch (error) {
+      return { data: 0, error: true }
+    }
+  },
+  deleteVehicle: async (id: number) => {
+    try {
+      await api.delete(`/api/v1/Veiculo/${id}`, { data: { id } })
 
       return { data: 0, error: false }
     } catch (_error) {
