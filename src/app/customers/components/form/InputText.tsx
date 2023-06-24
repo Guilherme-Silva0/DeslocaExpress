@@ -1,18 +1,18 @@
 'use client'
 
 import { InputAdornment, TextField, TextFieldProps } from '@mui/material'
-import { FormNewCustomerData } from './FormCustomer'
+import { FormCustomerData } from './FormCustomer'
 import { FieldErrors, UseFormRegister } from 'react-hook-form'
 import { FC } from 'react'
 import { LucideIcon } from 'lucide-react'
 
 type InputProps = TextFieldProps & {
   label: string
-  id: keyof FormNewCustomerData
+  id: keyof FormCustomerData
   type: string
   required?: boolean
-  register: UseFormRegister<FormNewCustomerData>
-  errors: FieldErrors<FormNewCustomerData>
+  register: UseFormRegister<FormCustomerData>
+  errors: FieldErrors<FormCustomerData>
   disabled?: boolean
   icon?: LucideIcon
 }
