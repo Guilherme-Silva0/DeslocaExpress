@@ -117,7 +117,7 @@ function DriverDetails({ id }: { id: string }) {
             <Typography variant="body1" fontWeight="bold">
               Número da Habilitação:
             </Typography>
-            <Typography variant="body2">{driver.numeroHabilitacao}</Typography>
+            <Typography variant="body2">{driver?.numeroHabilitacao}</Typography>
           </Grid>
           <Grid item xs={12} sm={6}>
             <Typography variant="body1" fontWeight="bold">
@@ -132,7 +132,8 @@ function DriverDetails({ id }: { id: string }) {
               Vencimento da Habilitação:
             </Typography>
             <Typography variant="body2">
-              {format(new Date(driver.vencimentoHabilitacao), 'dd/MM/yyyy')}
+              {driver?.vencimentoHabilitacao &&
+                format(new Date(driver?.vencimentoHabilitacao), 'dd/MM/yyyy')}
             </Typography>
           </Grid>
           <Grid item xs={12}>

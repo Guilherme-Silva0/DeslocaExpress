@@ -206,7 +206,7 @@ const FormDriver: FC<IFormDriverProps> = ({
             component="h2"
             marginLeft={theme.spacing(smDown ? 1 : 2)}
           >
-            {isEdit ? 'Edite o cliente' : 'Cadastre um novo cliente'}
+            {isEdit ? 'Edite o condutor' : 'Cadastre um novo condutor'}
           </Typography>
           <IconButton onClick={handleOpen}>
             <XIcon />
@@ -280,13 +280,15 @@ const FormDriver: FC<IFormDriverProps> = ({
             <Snackbar
               open={showError}
               onClose={() => setShowError((oldShowError) => !oldShowError)}
+              sx={{ zIndex: 9999 }}
             >
               <Alert
                 onClose={() => setShowError((oldShowError) => !oldShowError)}
                 variant="filled"
                 severity="error"
               >
-                Ops, Houve um erro!
+                Ops, Houve um erro, verifique se a nova data não é maior que a
+                data já existente!
               </Alert>
             </Snackbar>
           </Stack>
