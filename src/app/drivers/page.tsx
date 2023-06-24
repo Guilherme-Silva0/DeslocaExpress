@@ -34,7 +34,7 @@ export default function Home() {
   const filteredDrivers = useMemo(() => {
     if (searchTerm.trim()) {
       return allDrivers.filter((driver) =>
-        driver.nome.toLowerCase().includes(searchTerm.toLowerCase().trim()),
+        driver?.nome?.toLowerCase().includes(searchTerm.toLowerCase().trim()),
       )
     }
     return allDrivers
