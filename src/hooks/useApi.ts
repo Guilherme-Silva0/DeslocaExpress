@@ -29,6 +29,20 @@ export interface IVehicle {
   kmAtual: number
 }
 
+export interface IDisplacement {
+  id?: number
+  kmInicial?: number
+  kmFinal?: number
+  inicioDeslocamento?: string
+  fimDeslocamento?: string
+  checkList?: string
+  motivo?: string
+  observacao?: string
+  idCondutor?: number
+  idVeiculo?: number
+  idCliente?: number
+}
+
 const api = axios.create({
   baseURL: 'https://api-deslocamento.herokuapp.com',
 })
@@ -181,6 +195,59 @@ const useApi = () => ({
   deleteVehicle: async (id: number) => {
     try {
       await api.delete(`/api/v1/Veiculo/${id}`, { data: { id } })
+
+      return { data: 0, error: false }
+    } catch (_error) {
+      return { data: 0, error: true }
+    }
+  },
+  getAllDisplacements: async () => {
+    try {
+      const { data }: { data: IDisplacement[] } = await api.get(
+        '/api/v1/Deslocamento',
+      )
+
+      return { data, error: false }
+    } catch (_error) {
+      return { data: [], error: true }
+    }
+  },
+  getDisplacementById: async (id: string) => {
+    try {
+      const { data }: { data: IDisplacement } = await api.get(
+        `/api/v1/Deslocamento/${id}`,
+      )
+
+      return { data, error: false }
+    } catch (_error) {
+      return { data: {}, error: true }
+    }
+  },
+  createNewDisplacement: async (dataForm: IDisplacement) => {
+    try {
+      const { data }: { data: number } = await api.post(
+        '/api/v1/Deslocamento/IniciarDeslocamento',
+        dataForm,
+      )
+
+      return { data, error: false }
+    } catch (_error) {
+      return { data: 0, error: true }
+    }
+  },
+  editDisplacement: async (id: number | undefined, dataForm: IDisplacement) => {
+    try {
+      if (!id) return { data: 0, error: true }
+      await api.put(`/api/v1/Deslocamento/${id}/EncerrarDeslocamento`, dataForm)
+
+      return { data: 0, error: false }
+    } catch (error) {
+      return { data: 0, error: true }
+    }
+  },
+  deleteDisplacement: async (id: number) => {
+    try {
+      await api.delete(`/api/v1/Deslocamento/${id}`, { data: { id } })
 
       return { data: 0, error: false }
     } catch (_error) {
