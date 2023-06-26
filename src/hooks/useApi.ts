@@ -43,6 +43,13 @@ export interface IDisplacement {
   idCliente?: number
 }
 
+export interface IWeatherForecast {
+  date: string
+  temperatureC: number
+  temperatureF: number
+  summary: string
+}
+
 const api = axios.create({
   baseURL: 'https://api-deslocamento.herokuapp.com',
 })
@@ -252,6 +259,16 @@ const useApi = () => ({
       return { data: 0, error: false }
     } catch (_error) {
       return { data: 0, error: true }
+    }
+  },
+  getWeatherForecast: async () => {
+    try {
+      const { data }: { data: IWeatherForecast } = await api.get(
+        '/api/v1/WeatherForecast',
+      )
+      return { data, error: false }
+    } catch (_error) {
+      return { data: [], error: true }
     }
   },
 })
