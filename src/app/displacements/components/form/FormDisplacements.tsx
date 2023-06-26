@@ -73,13 +73,14 @@ const FormDisplacements: FC<IFormDisplacementProps> = ({
   isEdit,
   displacementData,
 }) => {
-  const [isLoading, setIsLoading] = useState(!isEdit)
+  const [isLoading, setIsLoading] = useState(true)
   const [idCondutorInput, setIdCondutorInput] = useState('')
   const [idCustomerInput, setIdCustomerInput] = useState('')
   const [idVehicleInput, setIdVehicleInput] = useState('')
   const [allCustomers, setAllCustomers] = useState<ICustomer[]>([])
   const [allDrivers, setAllDrivers] = useState<IDriver[]>([])
   const [allVehicles, setAllVehicles] = useState<IVehicle[]>([])
+  const [vehicleEdit, setVehicleEdit] = useState<IVehicle>({} as IVehicle)
   const [showError, setShowError] = useState({ erro: false, message: '' })
   const theme = useTheme()
   const smDown = useMediaQuery(theme.breakpoints.down('sm'))
@@ -91,6 +92,7 @@ const FormDisplacements: FC<IFormDisplacementProps> = ({
     getAllCustomers,
     getAllDrivers,
     getAllVehicles,
+    getVehicleById,
   } = useApi()
 
   const {
@@ -144,8 +146,25 @@ const FormDisplacements: FC<IFormDisplacementProps> = ({
     }
   }, [getAllCustomers, getAllDrivers, getAllVehicles])
 
+  const loadIdVehicleEdit = async () => {
+    try {
+      const { data, error } = await getVehicleById(
+        displacementData?.idVeiculo?.toString()!,
+      )
+      if (error)
+        return setShowError({
+          erro: true,
+          message: 'Houve um erro ao buscar o veículo',
+        })
+      setVehicleEdit(data as IVehicle)
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
   useEffect(() => {
     if (!isEdit) loadIds()
+    if (isEdit) loadIdVehicleEdit()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
@@ -154,7 +173,7 @@ const FormDisplacements: FC<IFormDisplacementProps> = ({
       setValue('checkList', displacementData?.checkList === 'Ok')
       setValue('motivo', displacementData?.motivo || '')
       setValue('observacao', displacementData?.observacao || '')
-      setValue('kmFinal', displacementData?.kmFinal?.toString() || '')
+      setValue('kmFinal', vehicleEdit?.kmAtual?.toString() || '')
       setValue('idCondutor', displacementData?.idCondutor?.toString() || '')
       setValue('idVeiculo', displacementData?.idVeiculo?.toString() || '')
       setValue('idCliente', displacementData?.idCliente?.toString() || '')
@@ -164,13 +183,9 @@ const FormDisplacements: FC<IFormDisplacementProps> = ({
     }
 
     if (!isEdit) setValue('kmFinal', '0')
-  }, [displacementData, setValue, isEdit])
+  }, [displacementData, setValue, isEdit, vehicleEdit])
 
   const onSubmitForm = async (dataForm: FormDisplacementData) => {
-    const [vehicle] = allVehicles.filter(
-      (vehicle) => vehicle.id === Number(dataForm.idVeiculo),
-    )
-
     if (isEdit) {
       try {
         setIsLoading(true)
@@ -190,10 +205,10 @@ const FormDisplacements: FC<IFormDisplacementProps> = ({
               'Houve um erro, verifique se os quilômetros finais são maiores que os iniciais',
           })
 
-        const { error: errorVehicle } = await editVehicle(vehicle?.id, {
-          id: vehicle?.id,
-          marcaModelo: vehicle.marcaModelo,
-          anoFabricacao: vehicle.anoFabricacao,
+        const { error: errorVehicle } = await editVehicle(vehicleEdit?.id, {
+          id: vehicleEdit?.id,
+          marcaModelo: vehicleEdit?.marcaModelo,
+          anoFabricacao: vehicleEdit?.anoFabricacao,
           kmAtual: Number(dataForm.kmFinal),
         })
         if (errorVehicle)
@@ -211,6 +226,10 @@ const FormDisplacements: FC<IFormDisplacementProps> = ({
     } else {
       try {
         setIsLoading(true)
+        const [vehicle] = allVehicles.filter(
+          (vehicle) => vehicle.id === Number(dataForm.idVeiculo),
+        )
+
         const { data, error } = await createNewDisplacement({
           idCliente: Number(dataForm.idCliente),
           idCondutor: Number(dataForm.idCondutor),
