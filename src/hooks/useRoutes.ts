@@ -26,14 +26,14 @@ const useRoutes = () => {
         to: '/drivers',
       },
       {
+        icon: TruckIcon,
+        label: 'Veículos',
+        to: '/vehicles',
+      },
+      {
         icon: MapIcon,
         label: 'Deslocamentos',
         to: '/displacements',
-      },
-      {
-        icon: TruckIcon,
-        label: 'Veiculos',
-        to: '/vehicles',
       },
     ],
     [],
