@@ -86,7 +86,7 @@ function VehicleDetails({ id }: { id: string }) {
     <Stack
       alignItems="center"
       justifyContent="center"
-      sx={{ minHeight: '100vh', paddingX: 2 }}
+      sx={{ minHeight: '100vh', paddingX: 2, maxWidth: '100%' }}
     >
       <Snackbar
         open={showError}
@@ -100,7 +100,7 @@ function VehicleDetails({ id }: { id: string }) {
           Ops, houve um erro!
         </Alert>
       </Snackbar>
-      <Paper elevation={3} sx={{ p: 3, marginTop: smDown ? -25 : 0 }}>
+      <Paper elevation={3} sx={{ p: 3, maxWidth: '100%' }}>
         <Typography variant="h5" sx={{ mb: 2 }}>
           Detalhes do veículo
         </Typography>

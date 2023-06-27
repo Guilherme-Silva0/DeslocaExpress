@@ -183,7 +183,7 @@ const DisplacementDetails = ({ id }: { id: string }) => {
     <Stack
       alignItems="center"
       justifyContent="center"
-      sx={{ minHeight: '100vh', paddingX: 2 }}
+      sx={{ minHeight: '100vh', paddingX: 2, maxWidth: '100%' }}
     >
       <Snackbar
         open={showError.erro}
@@ -197,7 +197,7 @@ const DisplacementDetails = ({ id }: { id: string }) => {
           {showError.message}
         </Alert>
       </Snackbar>
-      <Paper elevation={3} sx={{ p: 3, marginTop: smDown ? -5 : 0 }}>
+      <Paper elevation={3} sx={{ p: 3, maxWidth: '100%' }}>
         <Typography variant="h5" sx={{ mb: 2 }}>
           Detalhes do Deslocamento
         </Typography>
@@ -306,9 +306,14 @@ const DisplacementDetails = ({ id }: { id: string }) => {
                   Previsão do tempo
                 </Typography>
                 <Stack
-                  direction="row"
-                  spacing={2}
-                  divider={<Divider orientation="vertical" flexItem />}
+                  direction={smDown ? 'column' : 'row'}
+                  spacing={smDown ? 0.5 : 2}
+                  divider={
+                    <Divider
+                      orientation={smDown ? 'horizontal' : 'vertical'}
+                      flexItem
+                    />
+                  }
                 >
                   {weatherForecast.slice(0, 3).map((weather, index) => (
                     <Box key={index} p={2}>
